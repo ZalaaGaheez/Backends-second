@@ -168,7 +168,6 @@ app.get("/instructors", (req, res) => {
   instructors.map((instructor) => {
     if (nameFilter) {
       for (let name of nameFilter) {
-      
         if (instructor.name.toLowerCase().includes(name.toLowerCase())) {
           filteredInstructors.push(instructor);
         }
@@ -177,7 +176,7 @@ app.get("/instructors", (req, res) => {
       filteredInstructors.push(instructor);
     }
   });
-  res.json(filteredInstructors);
+  res.status(200).json({ instructors: filteredInstructors });
 });
 
 app.get("/instructors/:id", (req, res) => {
@@ -185,9 +184,9 @@ app.get("/instructors/:id", (req, res) => {
   const instructor = instructors.find((inst) => inst.instructor_id == id);
 
   if (instructor) {
-    res.json(instructor);
+    res.status(200).json({ instructor: instructor });
   } else {
-    res.json({ message: "instructor not found" });
+    res.status(404).json({ message: "instructor not found" });
   }
 });
 
@@ -198,18 +197,16 @@ app.get("/instructors/:id/courses", (req, res) => {
     const existingCourses = courses.filter((course) => {
       return course.instructors.includes(instructor.name);
     });
-    res.json(existingCourses);
+    res.status(200).json({ courses: existingCourses });
   } else {
-    res.json({ message: "instructor not found" });
+    res.status(404).json({ message: "instructor not found" });
   }
-  
 });
 
 app.get("/instructors/:id/courses/:courseId", (req, res) => {
   const id = req.params.id;
   const courseId = req.params.courseId;
   const instructor = instructors.find((inst) => inst.instructor_id == id);
-
 
   if (instructor) {
     const existingCourses = courses.filter((course) =>
@@ -221,12 +218,12 @@ app.get("/instructors/:id/courses/:courseId", (req, res) => {
     );
 
     if (course) {
-      res.json(course);
+      res.status(200).json({ course: course });
     } else {
-      res.json({ message: "course not found" });
+      res.status(404).json({ message: "course not found" });
     }
   } else {
-    res.json({ message: "instructor not found" });
+    res.status(404).json({ message: "instructor not found" });
   }
 });
 
