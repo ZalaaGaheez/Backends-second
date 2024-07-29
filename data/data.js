@@ -4,7 +4,6 @@ const courses=[
     course_name: "Advanced PHP",
     instructors: ["Alice Johnson", "Bob Brown"],
     tags: ["Web Design", "CSS", "Intermediate"],
-
     duration: "12 weeks",
     level: "Advanced",
   },
@@ -13,7 +12,6 @@ const courses=[
     course_name: "Python for Data Science",
     instructors: ["Clara White", "Daniel Green"],
     tags: ["JavaScript", "Programming", "Advanced"],
-
     duration: "8 weeks",
     level: "Intermediate",
   },
