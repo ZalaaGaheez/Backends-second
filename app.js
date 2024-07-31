@@ -6,6 +6,7 @@ const coursesRoutes = require('./routes/courses');
 const studentsRoutes = require('./routes/students');
 const instructorsRoutes = require('./routes/instructors');
 
+app.use(express.json()); 
 app.use('/courses', coursesRoutes);
 app.use('/students', studentsRoutes);
 app.use('/instructors', instructorsRoutes);

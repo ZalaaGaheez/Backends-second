@@ -75,4 +75,41 @@ router.get('/:id/students', (req, res) => {
   }
 });
 
+
+// Create a new course
+router.post('/', (req, res) => {
+  const newCourse = req.body;
+  newCourse.course_id = Math.max(...courses.map(course => course.course_id)) + 1;
+
+  courses.push(newCourse);
+  res.status(201).json({ course: newCourse });
+});
+
+// Update an existing course
+router.put('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const updatedData = req.body;
+  const courseIndex = courses.findIndex(course => course.course_id === id);
+
+  if (courseIndex === -1) {
+    return res.status(404).json({ message: "Course not found" });
+  }
+
+  courses[courseIndex] = { ...courses[courseIndex], ...updatedData };
+  res.status(200).json({ course: courses[courseIndex] });
+});
+
+// Delete a course
+router.delete('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const courseIndex = courses.findIndex(course => course.course_id === id);
+
+  if (courseIndex === -1) {
+    return res.status(404).json({ message: "Course not found" });
+  }
+
+  const deletedCourse = courses.splice(courseIndex, 1);
+  res.status(200).json({ course: deletedCourse[0] });
+});
+
 module.exports = router;

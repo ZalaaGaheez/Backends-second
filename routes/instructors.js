@@ -74,5 +74,42 @@ router.get('/:id/courses/:courseId', (req, res) => {
   }
 });
 
+
+// Create a new instructor
+router.post('/', (req, res) => {
+  const newInstructor = req.body;
+  newInstructor.instructor_id = Math.max(...instructors.map(inst => inst.instructor_id)) + 1;
+
+  instructors.push(newInstructor);
+  res.status(201).json({ instructor: newInstructor });
+});
+
+// Update an existing instructor
+router.put('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const updatedData = req.body;
+  const instructorIndex = instructors.findIndex(inst => inst.instructor_id === id);
+
+  if (instructorIndex === -1) {
+    return res.status(404).json({ message: "Instructor not found" });
+  }
+
+  instructors[instructorIndex] = { ...instructors[instructorIndex], ...updatedData };
+  res.status(200).json({ instructor: instructors[instructorIndex] });
+});
+
+// Delete an instructor
+router.delete('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const instructorIndex = instructors.findIndex(inst => inst.instructor_id === id);
+
+  if (instructorIndex === -1) {
+    return res.status(404).json({ message: "Instructor not found" });
+  }
+
+  const deletedInstructor = instructors.splice(instructorIndex, 1);
+  res.status(200).json({ instructor: deletedInstructor[0] });
+});
+
 module.exports = router;
   

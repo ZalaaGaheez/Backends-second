@@ -49,4 +49,41 @@ router.get('/major/:major', (req, res) => {
   }
 });
 
+
+// Create a new student
+router.post('/', (req, res) => {
+  const newStudent = req.body;
+  newStudent.student_id = Math.max(...students.map(stu => stu.student_id)) + 1;
+
+  students.push(newStudent);
+  res.status(201).json({ student: newStudent });
+});
+
+// Update an existing student
+router.put('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const updatedData = req.body;
+  const studentIndex = students.findIndex(stu => stu.student_id === id);
+
+  if (studentIndex === -1) {
+    return res.status(404).json({ message: "Student not found" });
+  }
+
+  students[studentIndex] = { ...students[studentIndex], ...updatedData };
+  res.status(200).json({ student: students[studentIndex] });
+});
+
+// Delete a student
+router.delete('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const studentIndex = students.findIndex(stu => stu.student_id === id);
+
+  if (studentIndex === -1) {
+    return res.status(404).json({ message: "Student not found" });
+  }
+
+  const deletedStudent = students.splice(studentIndex, 1);
+  res.status(200).json({ student: deletedStudent[0] });
+});
+
 module.exports = router;
